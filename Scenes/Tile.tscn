@@ -1,0 +1,94 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://images/32x32/misflagged.png" type="Texture" id=1]
+[ext_resource path="res://images/32x32/3.png" type="Texture" id=2]
+[ext_resource path="res://images/32x32/4.png" type="Texture" id=3]
+[ext_resource path="res://images/baseline_masks_black_48dp.png" type="Texture" id=4]
+[ext_resource path="res://images/32x32/red.png" type="Texture" id=5]
+[ext_resource path="res://images/32x32/6.png" type="Texture" id=6]
+[ext_resource path="res://images/tile-white-01.png" type="Texture" id=7]
+[ext_resource path="res://images/32x32/5.png" type="Texture" id=8]
+[ext_resource path="res://images/virus.png" type="Texture" id=9]
+[ext_resource path="res://images/tile-opacity-01.png" type="Texture" id=10]
+[ext_resource path="res://images/32x32/7.png" type="Texture" id=11]
+[ext_resource path="res://Scripts/Tile.gd" type="Script" id=12]
+[ext_resource path="res://images/32x32/2.png" type="Texture" id=13]
+[ext_resource path="res://images/32x32/1.png" type="Texture" id=14]
+[ext_resource path="res://images/32x32/8.png" type="Texture" id=16]
+
+[node name="Tile" type="Control"]
+margin_right = 50.0
+margin_bottom = 50.0
+script = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="."]
+margin_right = 45.0
+margin_bottom = 45.0
+focus_mode = 0
+enabled_focus_mode = 0
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Closed" type="Sprite" parent="."]
+scale = Vector2( 0.9, 0.9 )
+texture = ExtResource( 7 )
+centered = false
+
+[node name="Mask" type="Sprite" parent="Closed"]
+texture = ExtResource( 4 )
+centered = false
+
+[node name="Opened" type="Sprite" parent="."]
+scale = Vector2( 0.9, 0.9 )
+texture = ExtResource( 10 )
+centered = false
+
+[node name="Exploded" type="Sprite" parent="Opened"]
+texture = ExtResource( 5 )
+centered = false
+
+[node name="Bomb" type="Sprite" parent="Opened"]
+texture = ExtResource( 9 )
+centered = false
+
+[node name="Misflagged" type="Sprite" parent="Opened"]
+texture = ExtResource( 1 )
+centered = false
+
+[node name="1" type="Sprite" parent="Opened"]
+texture = ExtResource( 14 )
+centered = false
+
+[node name="2" type="Sprite" parent="Opened"]
+texture = ExtResource( 13 )
+centered = false
+
+[node name="3" type="Sprite" parent="Opened"]
+texture = ExtResource( 2 )
+centered = false
+
+[node name="4" type="Sprite" parent="Opened"]
+texture = ExtResource( 3 )
+centered = false
+
+[node name="5" type="Sprite" parent="Opened"]
+texture = ExtResource( 8 )
+centered = false
+
+[node name="6" type="Sprite" parent="Opened"]
+texture = ExtResource( 6 )
+centered = false
+
+[node name="7" type="Sprite" parent="Opened"]
+texture = ExtResource( 11 )
+centered = false
+
+[node name="8" type="Sprite" parent="Opened"]
+texture = ExtResource( 16 )
+centered = false
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
