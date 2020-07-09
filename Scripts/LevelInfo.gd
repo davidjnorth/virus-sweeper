@@ -2,16 +2,26 @@ extends Node2D
 
 onready var timer = $ProgressBarTimer
 onready var progress_bar = get_node("VBoxContainer/IncubationTime/ProgressBar")
-onready var increase_label = get_node("VBoxContainer/VirusChanges/VirusIncrease")
-onready var decrease_label = get_node("VBoxContainer/VirusChanges/VirusDecrease")
+onready var susceptible_label = get_node("VBoxContainer/VirusChanges/Susceptible")
+onready var infected_label = get_node("VBoxContainer/VirusChanges/Infected")
+onready var recoveries_label = get_node("VBoxContainer/VirusChanges/Recoveries")
+onready var board = get_parent().get_node("Board")
 var incubation_period = global.game_details()["incubation_period"]
 var secs = 0
 
 func _ready():
 	progress_bar.max_value = incubation_period
-	increase_label.bbcode_text = "Prev virus increase: [color=navy]0[/color]"
-	decrease_label.bbcode_text = "Prev virus recoveries: [color=navy]0[/color]"
+	
 
+func _process(delta):
+	if (board):
+		var susceptible = 0
+		if (board.game_over):
+			susceptible = get_tree().get_nodes_in_group("closed").size()
+		else:
+			susceptible = get_tree().get_nodes_in_group("closed").size() - board.bombs
+		susceptible_label.bbcode_text = "Susceptible: [color=navy]"+str(susceptible)+"[/color]"
+	
 
 func _on_Board_game_started():
 	secs = 0
@@ -32,21 +42,19 @@ func _on_TopUI_new_game():
 	timer.stop()
 	secs = 0
 	progress_bar.value = secs
-	increase_label.bbcode_text = "Prev virus increase: [color=navy]0[/color]"
-	decrease_label.bbcode_text = "Prev virus recoveries: [color=navy]0[/color]"
 
 
 func _on_Board_game_over(_win):
 	timer.stop()
 
 
-func _on_Board_viruses_changed(total_viruses, virus_increase, virus_decrease):
-	if virus_increase > 0:
-		increase_label.bbcode_text = "Prev virus increase: [color=red]+" + str(virus_increase) + "[/color]"
-	else:
-		increase_label.bbcode_text = "Prev virus increase: [color=navy]0[/color]"
-		
-	if virus_decrease > 0:
-		decrease_label.bbcode_text = "Prev virus recoveries: [color=green]+" + str(virus_decrease) + "[/color]"
-	else:
-		decrease_label.bbcode_text = "Prev virus recoveries: [color=navy]0[/color]"
+func _on_Board_viruses_changed(total_viruses, total_recovered, virus_increase, recoveries_increase):
+	infected_label.bbcode_text = "Infected: [color=red]"+str(total_viruses)+" (+"+str(virus_increase)+")[/color]"
+	recoveries_label.bbcode_text = "Recoveries: [color=green]"+str(total_recovered)+" (+"+str(recoveries_increase)+")[/color]"
+
+
+func _on_Board_board_ready():
+	var susceptible = get_tree().get_nodes_in_group("closed").size() - board.bombs
+	susceptible_label.bbcode_text = "Susceptible: [color=navy]"+str(susceptible)+"[/color]"
+	infected_label.bbcode_text = "Infected: [color=red]"+str(board.bombs)+"[/color]"
+	recoveries_label.bbcode_text = "Recoveries: [color=green]0[/color]"

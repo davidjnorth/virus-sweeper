@@ -12,16 +12,21 @@ var game_over = false
 var game_started = false
 #var total_flags
 var mask_selected = false
+var recovered = 0
+var probability_of_infection = game_details["probability_of_infection"]
+var recovery_rate = game_details["recovery_rate"]
 
 signal game_over
 signal game_started
 signal viruses_changed
+signal board_ready
 
 func _ready():
 	create_board()
 	add_bombs()
 	if game_mode != "classic":
 		setup_virus_spread()
+	emit_signal("board_ready")
 
 func _process(_delta):
 	if game_started == false && !get_tree().get_nodes_in_group("opened").empty():
@@ -80,10 +85,12 @@ func setup_virus_spread():
 
 func new_game():
 	added_bombs = 0
+	recovered = 0
 	virus_spread_timer.stop()
 	clear_board()
 	create_board()
 	add_bombs()
+	emit_signal("board_ready")
 
 func _on_TopUI_new_game():
 	new_game()
@@ -99,12 +106,21 @@ func _on_VirusSpread_timeout():
 	get_tree().call_group_flags(2, "opened", "update_sprites")
 	
 func covid_spread():
-	var infection_rate = game_details["infection_rate"]
 	var closed_tiles = get_tree().get_nodes_in_group("closed").size()
-	var infection_increase = (1 - (bombs / float(closed_tiles))) * infection_rate
-	var new_viruses = floor(bombs * infection_increase) / 2
+	var correctly_masked_tiles = get_tree().get_nodes_in_group("correctly_masked").size()
+	var unmasked_viruses = bombs - correctly_masked_tiles
+	var susceptible = closed_tiles - bombs
+	var new_viruses = floor(probability_of_infection * (susceptible) * unmasked_viruses)
+	print('new', probability_of_infection * (closed_tiles - bombs) * unmasked_viruses)
+	print('old', probability_of_infection * (closed_tiles - bombs) * bombs)
+	var new_recoveries = floor(bombs * recovery_rate)
+	var bomb_tiles = get_tree().get_nodes_in_group("bomb")
+	for n in range(new_recoveries):
+		var index=randi()%bomb_tiles.size()
+		bomb_tiles[index].remove_bomb()
+		bombs -= 1
 	bombs += new_viruses
-	emit_signal("viruses_changed", bombs, new_viruses, 0)
+	emit_signal("viruses_changed", bombs, recovered, new_viruses, new_recoveries)
 	
 func flu_spread():
 	var virus_increase = game_details["virus_increase"]

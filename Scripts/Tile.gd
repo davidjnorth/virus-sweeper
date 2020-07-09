@@ -5,9 +5,10 @@ var bombs_around=0
 var bomb=false
 var row=0
 var col=0
+var recovered = false
 ## closed sprites
 var sprite_closed=true
-var sprite_flagged=false
+var masked=false
 ## opened sprites
 var sprite_opened=false
 var sprite_bomb=false
@@ -41,6 +42,9 @@ func add_bomb_at(var c, var r):
 		bomb = true
 		add_to_group("bomb")
 		remove_from_group("tiles")
+		if masked:
+			remove_from_group("incorrectly_masked")
+			add_to_group("correctly_masked")
 		if(board):
 			board.added_bombs+=1
 			get_tree().call_group_flags(2, "tiles", "added_bomb_at", c, r)
@@ -58,12 +62,20 @@ func remove_bomb():
 	if !bomb || sprite_opened:
 		return
 	bomb = false
+	masked = false
+	recovered = true
 	remove_from_group("bomb")
 	add_to_group("tiles")
-	if(board):
-		board.added_bombs -= 1
-		get_tree().call_group_flags(2, "tiles", "removed_bomb_at", col, row)
+	if masked:
+		remove_from_group("correctly_masked")
+		add_to_group("incorrectly_masked")
+	board.added_bombs -= 1
+	board.recovered += 1
+	get_tree().call_group_flags(2, "tiles", "removed_bomb_at", col, row)
 	update_tile_number()
+	open_tile()
+	if !sprite_number:
+		get_tree().call_group_flags(2, "closed", "empty_tile_opened_at", col, row)
 		
 
 func removed_bomb_at(var c, var r):
@@ -80,7 +92,7 @@ func empty_tile_opened_at(var c, var r):
 		return
 	# is someone else around who opened the tile
 	if abs(row-r)<=1 && abs(col-c)<=1:
-		if sprite_closed && !sprite_flagged && !bomb:
+		if sprite_closed && !masked && !bomb:
 			open_tile()
 			if !sprite_number:
 				get_tree().call_group_flags(2, "closed", "empty_tile_opened_at", col, row)
@@ -97,7 +109,7 @@ func update_sprites():
 		get_node(closed_path).show()
 		get_node(opened_path).hide()
 		get_node("Closed/Mask").hide()
-		if sprite_flagged:
+		if masked:
 			get_node("Closed/Mask").show()
 	if sprite_opened:
 		get_node(closed_path).hide()
@@ -120,6 +132,7 @@ func hide_numbers():
 		get_node(str("Opened/",i)).hide()
 		
 func update_tile_number():
+	bombs_around = 0
 	var bomb_tiles = get_tree().get_nodes_in_group("bomb")
 	for bomb in bomb_tiles:
 		if abs(row-bomb.row)<=1 && abs(col-bomb.col)<=1:
@@ -128,21 +141,35 @@ func update_tile_number():
 func on_left_click():
 	if sprite_closed:
 		if board.mask_selected:
-			sprite_flagged = true
-			get_node("Closed/Mask").show()
-			board.unselect_mask()
-		elif sprite_flagged:
-			sprite_flagged = false
-			get_node("Closed/Mask").hide()
+			mask_tile()
+		elif masked:
+			unmask_tile()
 		else:
 			open_tile()
 			if !sprite_number && !sprite_exploded_bomb:
 				get_tree().call_group_flags(2, "closed", "empty_tile_opened_at", col, row)
 
+func mask_tile():
+	masked = true
+	get_node("Closed/Mask").show()
+	board.unselect_mask()
+	if bomb:
+		add_to_group("correctly_masked")
+	else:
+		add_to_group("incorrectly_masked")
+	
+func unmask_tile():
+	masked = false
+	get_node("Closed/Mask").hide()
+	if bomb:
+		remove_from_group("correctly_masked")
+	else:
+		remove_from_group("incorrectly_masked")
+	
 #func on_right_click():
 #	if sprite_closed:
-#		if !sprite_flagged && !sprite_question:
-#			sprite_flagged=true
+#		if !masked && !sprite_question:
+#			masked=true
 #			sprite_question=false
 #			get_tree().call_group("tiles", "flagged_added_at", col, row)
 #			if bomb:
@@ -150,8 +177,8 @@ func on_left_click():
 #			else:
 #				add_to_group("misflagged")
 #			return
-#		if sprite_flagged:
-#			sprite_flagged=false
+#		if masked:
+#			masked=false
 #			sprite_question=true
 #			get_tree().call_group("tiles", "flagged_removed_at", col, row)
 #			if bomb:
@@ -160,7 +187,7 @@ func on_left_click():
 #				remove_from_group("misflagged")
 #			return
 #		if sprite_question:
-#			sprite_flagged=false
+#			masked=false
 #			sprite_question=false
 #			return
 
@@ -176,9 +203,9 @@ func open_tile(var explode=true):
 	sprite_exploded_bomb=bomb && explode
 	if sprite_exploded_bomb:
 		add_to_group("exploded")
-	if !bomb && sprite_flagged:
-		sprite_misflagged_bomb=true
-		sprite_bomb=true
+#	if !bomb && masked:
+#		sprite_misflagged_bomb=true
+#		sprite_bomb=true
 	sprite_number=!sprite_misflagged_bomb && !bomb && bombs_around>0
 	update_sprites()
 

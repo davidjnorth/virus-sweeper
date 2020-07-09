@@ -196,30 +196,42 @@ margin_top = 37.0
 margin_right = 576.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 576, 33 )
-alignment = 1
+alignment = 2
 
-[node name="VirusIncrease" type="RichTextLabel" parent="LevelInfo/VBoxContainer/VirusChanges"]
-margin_left = 36.0
-margin_right = 286.0
+[node name="Susceptible" type="RichTextLabel" parent="LevelInfo/VBoxContainer/VirusChanges"]
+margin_left = 18.0
+margin_right = 188.0
 margin_bottom = 33.0
-rect_min_size = Vector2( 250, 33 )
+rect_min_size = Vector2( 170, 33 )
 custom_fonts/normal_font = SubResource( 5 )
 bbcode_enabled = true
-bbcode_text = "Prev virus increase: [color=red]+1[/color]"
+bbcode_text = "Susceptible: [color=navy]1[/color]"
 meta_underlined = false
-text = "Prev virus increase: +1"
+text = "Susceptible: 1"
 scroll_active = false
 
-[node name="VirusDecrease" type="RichTextLabel" parent="LevelInfo/VBoxContainer/VirusChanges"]
-margin_left = 290.0
-margin_right = 540.0
+[node name="Infected" type="RichTextLabel" parent="LevelInfo/VBoxContainer/VirusChanges"]
+margin_left = 192.0
+margin_right = 382.0
 margin_bottom = 33.0
-rect_min_size = Vector2( 250, 33 )
+rect_min_size = Vector2( 190, 33 )
 custom_fonts/normal_font = SubResource( 5 )
 bbcode_enabled = true
-bbcode_text = "Prev virus recoveries: [color=green]+1[/color]"
+bbcode_text = "Infected: [color=red]20 (+2)[/color]"
 meta_underlined = false
-text = "Prev virus recoveries: +1"
+text = "Infected: 20 (+2)"
+scroll_active = false
+
+[node name="Recoveries" type="RichTextLabel" parent="LevelInfo/VBoxContainer/VirusChanges"]
+margin_left = 386.0
+margin_right = 576.0
+margin_bottom = 33.0
+rect_min_size = Vector2( 190, 33 )
+custom_fonts/normal_font = SubResource( 5 )
+bbcode_enabled = true
+bbcode_text = "Recoveries: [color=green]2 (+2)[/color]"
+meta_underlined = false
+text = "Recoveries: 2 (+2)"
 scroll_active = false
 
 [node name="ProgressBarTimer" type="Timer" parent="LevelInfo"]
@@ -244,6 +256,7 @@ __meta__ = {
 [connection signal="pressed" from="TopUI/Mask" to="Board" method="_on_Mask_pressed"]
 [connection signal="timeout" from="LevelInfo/ProgressBarTimer" to="LevelInfo" method="_on_ProgressBarTimer_timeout"]
 [connection signal="timeout" from="VirusSpreadTimer" to="Board" method="_on_VirusSpread_timeout"]
+[connection signal="board_ready" from="Board" to="LevelInfo" method="_on_Board_board_ready"]
 [connection signal="game_over" from="Board" to="TopUI/DisplayTime" method="_on_Board_game_over"]
 [connection signal="game_over" from="Board" to="LevelInfo" method="_on_Board_game_over"]
 [connection signal="game_started" from="Board" to="TopUI/DisplayTime" method="_on_Board_game_started"]

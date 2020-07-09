@@ -9,7 +9,7 @@ var game_rules = {
 		"medium": {
 			"bombs": 20,
 			"incubation_period": 0,
-			"infection_rate": 0
+			"probability_of_infection": 0
 		}
 	},
 	"flu": {
@@ -24,8 +24,8 @@ var game_rules = {
 		"medium": {
 			"bombs": 20,
 			"incubation_period": 60,
-			"infection_rate": 1.4,
-			"recovery_rate": 0.3
+			"probability_of_infection": 0.01,
+			"recovery_rate": 0.08
 		}
 	}
 }

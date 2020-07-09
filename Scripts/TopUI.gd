@@ -14,5 +14,5 @@ func _on_Back_pressed():
 func _on_Restart_pressed():
 	emit_signal("new_game")
 
-func _on_Board_viruses_changed(viruses, _virus_increase, _virus_decrease):
+func _on_Board_viruses_changed(viruses, _recovered, _virus_increase, _virus_decrease):
 	bombs_label.set_text(str(viruses))
