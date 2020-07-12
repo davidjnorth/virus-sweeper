@@ -7,14 +7,14 @@ var game_difficulty = "medium"
 var game_rules = {
 	"classic": {
 		"medium": {
-			"bombs": 20,
+			"viruses": 20,
 			"incubation_period": 0,
 			"probability_of_infection": 0
 		}
 	},
 	"flu": {
 		"medium": {
-			"bombs": 20,
+			"viruses": 20,
 			"incubation_period": 30,
 			"virus_increase": 5,
 			"virus_decrease": 5
@@ -22,7 +22,7 @@ var game_rules = {
 	},
 	"covid-19": {
 		"medium": {
-			"bombs": 20,
+			"viruses": 1,
 			"incubation_period": 60,
 			"probability_of_infection": 0.01,
 			"recovery_rate": 0.08

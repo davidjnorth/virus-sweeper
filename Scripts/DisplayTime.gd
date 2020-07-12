@@ -3,6 +3,7 @@ extends Label
 onready var timer = get_node('Timer')
 var secs = 0
 var mins = 0
+var displayed_time = "0:00"
 var color_timer = 0
 var color = "white"
 
@@ -28,9 +29,11 @@ func increase_seconds():
 		
 func display_time():
 	if secs > 9:
-		set_text(str(mins)+":"+str(secs))
+		displayed_time = str(mins)+":"+str(secs)
+		set_text(displayed_time)
 	else:
-		set_text(str(mins)+":0"+str(secs))
+		displayed_time = str(mins)+":0"+str(secs)
+		set_text(displayed_time)
 	
 func update_color():
 	color_timer += 1

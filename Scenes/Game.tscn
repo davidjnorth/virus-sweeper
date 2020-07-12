@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Scripts/DisplayTime.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Board.gd" type="Script" id=2]
@@ -12,23 +12,41 @@
 [ext_resource path="res://Scripts/TopUI.gd" type="Script" id=10]
 [ext_resource path="res://images/baseline_masks_black_48dp.png" type="Texture" id=11]
 [ext_resource path="res://Scripts/LevelInfo.gd" type="Script" id=12]
+[ext_resource path="res://Scripts/GameWinDialog.gd" type="Script" id=13]
+[ext_resource path="res://Fonts/Baloo2-Bold.ttf" type="DynamicFontData" id=14]
 
 [sub_resource type="DynamicFont" id=1]
 size = 40
 font_data = ExtResource( 8 )
 
 [sub_resource type="DynamicFont" id=2]
+size = 26
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=3]
 size = 22
 font_data = ExtResource( 8 )
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0.266667, 0.266667, 0.266667, 1 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=6]
 size = 22
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 60
+font_data = ExtResource( 14 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 46
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 25
 font_data = ExtResource( 8 )
 
 [node name="Game" type="Node2D"]
@@ -141,6 +159,7 @@ __meta__ = {
 }
 
 [node name="WhiteSprite" type="Sprite" parent="TopUI/Mask"]
+position = Vector2( 0, -0.54097 )
 texture = ExtResource( 9 )
 centered = false
 
@@ -149,6 +168,18 @@ visible = false
 scale = Vector2( 1.97153, 1.99582 )
 texture = ExtResource( 11 )
 centered = false
+
+[node name="UnusedMasksLabel" type="Label" parent="TopUI/Mask"]
+margin_left = 60.0
+margin_top = 50.0
+margin_right = 90.0
+margin_bottom = 92.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0, 0.138614, 0.822363, 1 )
+text = "20"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="LevelInfo" type="Node2D" parent="."]
 script = ExtResource( 12 )
@@ -170,7 +201,7 @@ rect_min_size = Vector2( 0, 33 )
 margin_top = -4.0
 margin_right = 200.0
 margin_bottom = 32.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Incubation time"
 align = 1
@@ -184,8 +215,8 @@ margin_left = 190.0
 margin_top = 3.0
 margin_right = 560.0
 margin_bottom = 24.0
-custom_styles/fg = SubResource( 3 )
-custom_styles/bg = SubResource( 4 )
+custom_styles/fg = SubResource( 4 )
+custom_styles/bg = SubResource( 5 )
 percent_visible = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -203,7 +234,7 @@ margin_left = 18.0
 margin_right = 188.0
 margin_bottom = 33.0
 rect_min_size = Vector2( 170, 33 )
-custom_fonts/normal_font = SubResource( 5 )
+custom_fonts/normal_font = SubResource( 6 )
 bbcode_enabled = true
 bbcode_text = "Susceptible: [color=navy]1[/color]"
 meta_underlined = false
@@ -215,7 +246,7 @@ margin_left = 192.0
 margin_right = 382.0
 margin_bottom = 33.0
 rect_min_size = Vector2( 190, 33 )
-custom_fonts/normal_font = SubResource( 5 )
+custom_fonts/normal_font = SubResource( 6 )
 bbcode_enabled = true
 bbcode_text = "Infected: [color=red]20 (+2)[/color]"
 meta_underlined = false
@@ -227,7 +258,7 @@ margin_left = 386.0
 margin_right = 576.0
 margin_bottom = 33.0
 rect_min_size = Vector2( 190, 33 )
-custom_fonts/normal_font = SubResource( 5 )
+custom_fonts/normal_font = SubResource( 6 )
 bbcode_enabled = true
 bbcode_text = "Recoveries: [color=green]2 (+2)[/color]"
 meta_underlined = false
@@ -247,8 +278,66 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="new_game" from="TopUI" to="Board" method="_on_TopUI_new_game"]
+
+[node name="GameWinDialog" type="PopupDialog" parent="."]
+visible = true
+margin_right = 400.0
+margin_bottom = 350.0
+rect_min_size = Vector2( 300, 300 )
+script = ExtResource( 13 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="GameWinDialog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="GameWinDialog"]
+anchor_right = 1.0
+margin_bottom = 63.0
+custom_fonts/font = SubResource( 7 )
+text = "Win!"
+align = 1
+
+[node name="GameDetails" type="VBoxContainer" parent="GameWinDialog"]
+margin_top = 100.0
+margin_right = 400.0
+margin_bottom = 264.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GameModeLabel" type="Label" parent="GameWinDialog/GameDetails"]
+margin_right = 400.0
+margin_bottom = 74.0
+custom_fonts/font = SubResource( 8 )
+text = "Covid-19"
+align = 1
+
+[node name="TimeLabel" type="Label" parent="GameWinDialog/GameDetails"]
+margin_top = 78.0
+margin_right = 400.0
+margin_bottom = 152.0
+custom_fonts/font = SubResource( 8 )
+text = "0:00"
+align = 1
+
+[node name="OKButton" type="Button" parent="GameWinDialog"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -47.0
+custom_fonts/font = SubResource( 9 )
+text = "OK"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="new_game" from="TopUI" to="TopUI/DisplayTime" method="_on_TopUI_new_game"]
+[connection signal="new_game" from="TopUI" to="Board" method="_on_TopUI_new_game"]
 [connection signal="new_game" from="TopUI" to="LevelInfo" method="_on_TopUI_new_game"]
 [connection signal="pressed" from="TopUI/Back" to="TopUI" method="_on_Back_pressed"]
 [connection signal="pressed" from="TopUI/Restart" to="TopUI" method="_on_Restart_pressed"]
@@ -259,7 +348,9 @@ __meta__ = {
 [connection signal="board_ready" from="Board" to="LevelInfo" method="_on_Board_board_ready"]
 [connection signal="game_over" from="Board" to="TopUI/DisplayTime" method="_on_Board_game_over"]
 [connection signal="game_over" from="Board" to="LevelInfo" method="_on_Board_game_over"]
+[connection signal="game_over" from="Board" to="GameWinDialog" method="_on_Board_game_over"]
 [connection signal="game_started" from="Board" to="TopUI/DisplayTime" method="_on_Board_game_started"]
 [connection signal="game_started" from="Board" to="LevelInfo" method="_on_Board_game_started"]
 [connection signal="viruses_changed" from="Board" to="TopUI" method="_on_Board_viruses_changed"]
 [connection signal="viruses_changed" from="Board" to="LevelInfo" method="_on_Board_viruses_changed"]
+[connection signal="pressed" from="GameWinDialog/OKButton" to="GameWinDialog" method="_on_OKButton_pressed"]

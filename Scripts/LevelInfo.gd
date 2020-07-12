@@ -19,7 +19,7 @@ func _process(delta):
 		if (board.game_over):
 			susceptible = get_tree().get_nodes_in_group("closed").size()
 		else:
-			susceptible = get_tree().get_nodes_in_group("closed").size() - board.bombs
+			susceptible = get_tree().get_nodes_in_group("closed").size() - board.viruses
 		susceptible_label.bbcode_text = "Susceptible: [color=navy]"+str(susceptible)+"[/color]"
 	
 
@@ -54,7 +54,7 @@ func _on_Board_viruses_changed(total_viruses, total_recovered, virus_increase, r
 
 
 func _on_Board_board_ready():
-	var susceptible = get_tree().get_nodes_in_group("closed").size() - board.bombs
+	var susceptible = get_tree().get_nodes_in_group("closed").size() - board.viruses
 	susceptible_label.bbcode_text = "Susceptible: [color=navy]"+str(susceptible)+"[/color]"
-	infected_label.bbcode_text = "Infected: [color=red]"+str(board.bombs)+"[/color]"
+	infected_label.bbcode_text = "Infected: [color=red]"+str(board.viruses)+"[/color]"
 	recoveries_label.bbcode_text = "Recoveries: [color=green]0[/color]"
