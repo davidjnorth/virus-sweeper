@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://Scripts/DisplayTime.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Board.gd" type="Script" id=2]
@@ -14,6 +14,9 @@
 [ext_resource path="res://Scripts/LevelInfo.gd" type="Script" id=12]
 [ext_resource path="res://Scripts/GameWinDialog.gd" type="Script" id=13]
 [ext_resource path="res://Fonts/Baloo2-Bold.ttf" type="DynamicFontData" id=14]
+[ext_resource path="res://Fonts/dialog_styleboxflat.tres" type="StyleBox" id=15]
+[ext_resource path="res://Scripts/HowToPlayDialog.gd" type="Script" id=16]
+[ext_resource path="res://Fonts/Dialog_Title.tres" type="DynamicFont" id=17]
 
 [sub_resource type="DynamicFont" id=1]
 size = 40
@@ -38,15 +41,27 @@ size = 22
 font_data = ExtResource( 8 )
 
 [sub_resource type="DynamicFont" id=7]
-size = 60
-font_data = ExtResource( 14 )
+size = 46
+font_data = ExtResource( 8 )
 
 [sub_resource type="DynamicFont" id=8]
-size = 46
+size = 22
 font_data = ExtResource( 8 )
 
 [sub_resource type="DynamicFont" id=9]
 size = 25
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=10]
+size = 30
+font_data = ExtResource( 14 )
+
+[sub_resource type="DynamicFont" id=11]
+size = 19
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=12]
+size = 32
 font_data = ExtResource( 8 )
 
 [node name="Game" type="Node2D"]
@@ -280,10 +295,10 @@ __meta__ = {
 }
 
 [node name="GameWinDialog" type="PopupDialog" parent="."]
-visible = true
 margin_right = 400.0
-margin_bottom = 350.0
+margin_bottom = 400.0
 rect_min_size = Vector2( 300, 300 )
+custom_styles/panel = ExtResource( 15 )
 script = ExtResource( 13 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -299,9 +314,12 @@ __meta__ = {
 [node name="Title" type="Label" parent="GameWinDialog"]
 anchor_right = 1.0
 margin_bottom = 63.0
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = ExtResource( 17 )
 text = "Win!"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="GameDetails" type="VBoxContainer" parent="GameWinDialog"]
 margin_top = 100.0
@@ -314,15 +332,23 @@ __meta__ = {
 [node name="GameModeLabel" type="Label" parent="GameWinDialog/GameDetails"]
 margin_right = 400.0
 margin_bottom = 74.0
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 7 )
 text = "Covid-19"
 align = 1
 
-[node name="TimeLabel" type="Label" parent="GameWinDialog/GameDetails"]
+[node name="NewHighscoreLabel" type="Label" parent="GameWinDialog/GameDetails"]
 margin_top = 78.0
 margin_right = 400.0
-margin_bottom = 152.0
+margin_bottom = 114.0
 custom_fonts/font = SubResource( 8 )
+text = "New Highscore!!"
+align = 1
+
+[node name="TimeLabel" type="Label" parent="GameWinDialog/GameDetails"]
+margin_top = 118.0
+margin_right = 400.0
+margin_bottom = 192.0
+custom_fonts/font = SubResource( 7 )
 text = "0:00"
 align = 1
 
@@ -333,6 +359,73 @@ anchor_bottom = 1.0
 margin_top = -47.0
 custom_fonts/font = SubResource( 9 )
 text = "OK"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HowToPlayDialog" type="PopupDialog" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 523.0
+margin_bottom = 960.0
+custom_styles/panel = ExtResource( 15 )
+script = ExtResource( 16 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="HowToPlayDialog"]
+margin_right = 523.0
+margin_bottom = 95.0
+custom_fonts/font = ExtResource( 17 )
+text = "How to play"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HowToPlayDialog"]
+margin_left = 20.0
+margin_top = 95.0
+margin_right = 511.0
+margin_bottom = 825.0
+custom_fonts/bold_font = SubResource( 10 )
+custom_fonts/normal_font = SubResource( 11 )
+bbcode_enabled = true
+bbcode_text = "[b]Classic[/b]
+To play VirusSweeper, click anywhere on the board to start the game. Then, click another square. When you start seeing numbers, recognize that the number denotes how many viruses are touching that square. If you think that a square might definitely have a virus underneath of it, click the mask on the top right and place it on the square. Click any squares that don't contain viruses. This will clear the squares in question. To win a round of VirusSweeper, you must click on every square that doesn't have a virus under it. Once you've done so, the game will be over. If you accidentally click a square that has a virus beneath it, the game will be over.
+
+[b]Flu and Covid-19[/b]
+The same as classic but...
+- There is an incubation period for the viruses
+- After each incubation period viruses spread and recover
+- Viruses with masks on them are less likely to spread
+- Masks are limited, so use them wisely
+- The incubation period for flu is shorter than covid-19
+- The spread rate of covid-19 is higher than flu"
+text = "Classic
+To play VirusSweeper, click anywhere on the board to start the game. Then, click another square. When you start seeing numbers, recognize that the number denotes how many viruses are touching that square. If you think that a square might definitely have a virus underneath of it, click the mask on the top right and place it on the square. Click any squares that don't contain viruses. This will clear the squares in question. To win a round of VirusSweeper, you must click on every square that doesn't have a virus under it. Once you've done so, the game will be over. If you accidentally click a square that has a virus beneath it, the game will be over.
+
+Flu and Covid-19
+The same as classic but...
+- There is an incubation period for the viruses
+- After each incubation period viruses spread and recover
+- Viruses with masks on them are less likely to spread
+- Masks are limited, so use them wisely
+- The incubation period for flu is shorter than covid-19
+- The spread rate of covid-19 is higher than flu"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Close" type="Button" parent="HowToPlayDialog"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -60.0001
+margin_bottom = -6.10352e-05
+custom_fonts/font = SubResource( 12 )
+text = "Close"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -347,10 +440,11 @@ __meta__ = {
 [connection signal="timeout" from="VirusSpreadTimer" to="Board" method="_on_VirusSpread_timeout"]
 [connection signal="board_ready" from="Board" to="LevelInfo" method="_on_Board_board_ready"]
 [connection signal="game_over" from="Board" to="TopUI/DisplayTime" method="_on_Board_game_over"]
-[connection signal="game_over" from="Board" to="LevelInfo" method="_on_Board_game_over"]
 [connection signal="game_over" from="Board" to="GameWinDialog" method="_on_Board_game_over"]
+[connection signal="game_over" from="Board" to="LevelInfo" method="_on_Board_game_over"]
 [connection signal="game_started" from="Board" to="TopUI/DisplayTime" method="_on_Board_game_started"]
 [connection signal="game_started" from="Board" to="LevelInfo" method="_on_Board_game_started"]
 [connection signal="viruses_changed" from="Board" to="TopUI" method="_on_Board_viruses_changed"]
 [connection signal="viruses_changed" from="Board" to="LevelInfo" method="_on_Board_viruses_changed"]
 [connection signal="pressed" from="GameWinDialog/OKButton" to="GameWinDialog" method="_on_OKButton_pressed"]
+[connection signal="pressed" from="HowToPlayDialog/Close" to="HowToPlayDialog" method="_on_Close_pressed"]

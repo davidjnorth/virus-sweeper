@@ -11,9 +11,9 @@ var sprite_closed=true
 var masked=false
 ## opened sprites
 var sprite_opened=false
-var sprite_bomb=false
-var sprite_misflagged_bomb=false
-var sprite_exploded_bomb=false
+var sprite_virus=false
+var sprite_mismasked_virus=false
+var sprite_exploded_virus=false
 var sprite_number=false
 onready var board = get_parent()
 
@@ -117,14 +117,14 @@ func update_sprites():
 		get_node(opened_path).show()
 		hide_numbers()
 		get_node("Opened/Exploded").hide()
-		get_node("Opened/Bomb").hide()
-		get_node("Opened/Misflagged").hide()
-		if sprite_exploded_bomb:
+		get_node("Opened/Virus").hide()
+		get_node("Opened/Mismasked").hide()
+		if sprite_exploded_virus:
 			get_node("Opened/Exploded").show()
-		if sprite_bomb:
-			get_node("Opened/Bomb").show() 
-		if sprite_misflagged_bomb:
-			get_node("Opened/Misflagged").show()
+		if sprite_virus:
+			get_node("Opened/Virus").show()
+		if sprite_mismasked_virus:
+			get_node("Opened/Mismasked").show()
 		if viruses_around && sprite_number:
 			get_node(str("Opened/",viruses_around)).show()
 	
@@ -147,7 +147,7 @@ func on_left_click():
 			unmask_tile()
 		else:
 			open_tile()
-			if !sprite_number && !sprite_exploded_bomb:
+			if !sprite_number && !sprite_exploded_virus:
 				get_tree().call_group_flags(2, "closed", "empty_tile_opened_at", col, row)
 
 func mask_tile():
@@ -168,31 +168,6 @@ func unmask_tile():
 		remove_from_group("correctly_masked")
 	else:
 		remove_from_group("incorrectly_masked")
-	
-#func on_right_click():
-#	if sprite_closed:
-#		if !masked && !sprite_question:
-#			masked=true
-#			sprite_question=false
-#			get_tree().call_group("tiles", "flagged_added_at", col, row)
-#			if virus:
-#				add_to_group("correctly_flagged")
-#			else:
-#				add_to_group("misflagged")
-#			return
-#		if masked:
-#			masked=false
-#			sprite_question=true
-#			get_tree().call_group("tiles", "flagged_removed_at", col, row)
-#			if virus:
-#				remove_from_group("correctly_flagged")
-#			else:
-#				remove_from_group("misflagged")
-#			return
-#		if sprite_question:
-#			masked=false
-#			sprite_question=false
-#			return
 
 
 func open_tile(var explode=true):
@@ -202,14 +177,11 @@ func open_tile(var explode=true):
 	add_to_group("opened")
 	sprite_closed=false
 	sprite_opened=true
-	sprite_bomb=virus
-	sprite_exploded_bomb=virus && explode
-	if sprite_exploded_bomb:
+	sprite_virus=virus
+	sprite_exploded_virus=virus && explode
+	if sprite_exploded_virus:
 		add_to_group("exploded")
-#	if !virus && masked:
-#		sprite_misflagged_bomb=true
-#		sprite_bomb=true
-	sprite_number=!sprite_misflagged_bomb && !virus && viruses_around>0
+	sprite_number=!sprite_mismasked_virus && !virus && viruses_around>0
 	update_sprites()
 
 func _on_Button_pressed():

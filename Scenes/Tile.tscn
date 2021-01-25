@@ -4,11 +4,11 @@
 [ext_resource path="res://images/32x32/3.png" type="Texture" id=2]
 [ext_resource path="res://images/32x32/4.png" type="Texture" id=3]
 [ext_resource path="res://images/baseline_masks_black_48dp.png" type="Texture" id=4]
-[ext_resource path="res://images/32x32/red.png" type="Texture" id=5]
+[ext_resource path="res://images/tile-red.png" type="Texture" id=5]
 [ext_resource path="res://images/32x32/6.png" type="Texture" id=6]
 [ext_resource path="res://images/tile-white-01.png" type="Texture" id=7]
 [ext_resource path="res://images/32x32/5.png" type="Texture" id=8]
-[ext_resource path="res://images/virus.png" type="Texture" id=9]
+[ext_resource path="res://images/baseline_coronavirus_black_48dp.png" type="Texture" id=9]
 [ext_resource path="res://images/tile-opacity-01.png" type="Texture" id=10]
 [ext_resource path="res://images/32x32/7.png" type="Texture" id=11]
 [ext_resource path="res://Scripts/Tile.gd" type="Script" id=12]
@@ -52,43 +52,54 @@ centered = false
 texture = ExtResource( 5 )
 centered = false
 
-[node name="Bomb" type="Sprite" parent="Opened"]
+[node name="Virus" type="Sprite" parent="Opened"]
+position = Vector2( 0, 4.76837e-07 )
+scale = Vector2( 0.52, 0.52 )
 texture = ExtResource( 9 )
 centered = false
 
-[node name="Misflagged" type="Sprite" parent="Opened"]
+[node name="Mismasked" type="Sprite" parent="Opened"]
+scale = Vector2( 1.55, 1.55 )
 texture = ExtResource( 1 )
 centered = false
 
 [node name="1" type="Sprite" parent="Opened"]
+scale = Vector2( 1.55, 1.55 )
 texture = ExtResource( 14 )
 centered = false
 
 [node name="2" type="Sprite" parent="Opened"]
+scale = Vector2( 1.55, 1.55 )
 texture = ExtResource( 13 )
 centered = false
 
 [node name="3" type="Sprite" parent="Opened"]
+scale = Vector2( 1.55, 1.55 )
 texture = ExtResource( 2 )
 centered = false
 
 [node name="4" type="Sprite" parent="Opened"]
+scale = Vector2( 1.55, 1.55 )
 texture = ExtResource( 3 )
 centered = false
 
 [node name="5" type="Sprite" parent="Opened"]
+scale = Vector2( 1.55, 1.55 )
 texture = ExtResource( 8 )
 centered = false
 
 [node name="6" type="Sprite" parent="Opened"]
+scale = Vector2( 1.55, 1.55 )
 texture = ExtResource( 6 )
 centered = false
 
 [node name="7" type="Sprite" parent="Opened"]
+scale = Vector2( 1.55, 1.55 )
 texture = ExtResource( 11 )
 centered = false
 
 [node name="8" type="Sprite" parent="Opened"]
+scale = Vector2( 1.55, 1.55 )
 texture = ExtResource( 16 )
 centered = false
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

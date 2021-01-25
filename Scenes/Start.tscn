@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/MenuButtons.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Difficulty.gd" type="Script" id=2]
@@ -6,9 +6,10 @@
 [ext_resource path="res://Fonts/BebasNeue-Regular.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://Fonts/architect_65.tres" type="DynamicFont" id=5]
 [ext_resource path="res://images/background-01-01.png" type="Texture" id=6]
+[ext_resource path="res://Scripts/Highscores.gd" type="Script" id=7]
 
 [sub_resource type="DynamicFont" id=1]
-size = 100
+size = 121
 font_data = ExtResource( 4 )
 
 [node name="Start" type="Node2D"]
@@ -25,15 +26,15 @@ __meta__ = {
 
 [node name="UI" type="Node2D" parent="."]
 
-[node name="Title" type="Label" parent="UI"]
+[node name="Title" type="RichTextLabel" parent="UI"]
+margin_left = 12.0
 margin_top = 250.0
 margin_right = 576.0
 margin_bottom = 404.0
-custom_fonts/font = SubResource( 1 )
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-text = "Virus Sweeper"
-align = 1
-valign = 1
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Virus[color=black]Sweeper[/color]"
+text = "VirusSweeper"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -67,10 +68,26 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Quit" type="Button" parent="UI/MenuButtons/Start/StartMenu"]
+[node name="Highscores" type="Button" parent="UI/MenuButtons/Start/StartMenu"]
 margin_top = 114.0
 margin_right = 576.0
 margin_bottom = 224.0
+focus_mode = 0
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+enabled_focus_mode = 0
+text = "Highscores"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Quit" type="Button" parent="UI/MenuButtons/Start/StartMenu"]
+margin_top = 228.0
+margin_right = 576.0
+margin_bottom = 338.0
 focus_mode = 0
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -161,8 +178,125 @@ __meta__ = {
 }
 
 [node name="MoveTween" type="Tween" parent="UI/MenuButtons/Difficulty"]
+
+[node name="Highscores" type="Node2D" parent="UI/MenuButtons"]
+position = Vector2( 576, 0 )
+script = ExtResource( 7 )
+
+[node name="HighscoreMenu" type="VBoxContainer" parent="UI/MenuButtons/Highscores"]
+margin_top = 450.0
+margin_right = 576.0
+margin_bottom = 752.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Classic" type="Control" parent="UI/MenuButtons/Highscores/HighscoreMenu"]
+margin_right = 576.0
+margin_bottom = 110.0
+rect_min_size = Vector2( 576, 110 )
+
+[node name="GameMode" type="Label" parent="UI/MenuButtons/Highscores/HighscoreMenu/Classic"]
+margin_right = 288.0
+margin_bottom = 104.0
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Classic"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Score" type="Label" parent="UI/MenuButtons/Highscores/HighscoreMenu/Classic"]
+margin_left = 288.0
+margin_right = 576.0
+margin_bottom = 104.0
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "-"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Flu" type="Control" parent="UI/MenuButtons/Highscores/HighscoreMenu"]
+margin_top = 114.0
+margin_right = 576.0
+margin_bottom = 224.0
+rect_min_size = Vector2( 0, 110 )
+
+[node name="GameMode" type="Label" parent="UI/MenuButtons/Highscores/HighscoreMenu/Flu"]
+margin_right = 288.0
+margin_bottom = 104.0
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Flu"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Score" type="Label" parent="UI/MenuButtons/Highscores/HighscoreMenu/Flu"]
+margin_left = 288.0
+margin_right = 576.0
+margin_bottom = 104.0
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "-"
+align = 1
+
+[node name="Covid19" type="Control" parent="UI/MenuButtons/Highscores/HighscoreMenu"]
+margin_top = 228.0
+margin_right = 576.0
+margin_bottom = 338.0
+rect_min_size = Vector2( 0, 110 )
+
+[node name="GameMode" type="Label" parent="UI/MenuButtons/Highscores/HighscoreMenu/Covid19"]
+margin_right = 288.0
+margin_bottom = 104.0
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Covid-19"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Score" type="Label" parent="UI/MenuButtons/Highscores/HighscoreMenu/Covid19"]
+margin_left = 288.0
+margin_right = 576.0
+margin_bottom = 104.0
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "-"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HighscoreBack" type="Button" parent="UI/MenuButtons/Highscores/HighscoreMenu"]
+margin_top = 342.0
+margin_right = 576.0
+margin_bottom = 452.0
+rect_min_size = Vector2( 0, 110 )
+focus_mode = 0
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+enabled_focus_mode = 0
+text = "Back"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MoveTween" type="Tween" parent="UI/MenuButtons/Highscores"]
 [connection signal="pressed" from="UI/MenuButtons/Start/StartMenu/Start" to="UI/MenuButtons" method="_on_Start_pressed"]
+[connection signal="pressed" from="UI/MenuButtons/Start/StartMenu/Highscores" to="UI/MenuButtons" method="_on_Highscores_pressed"]
+[connection signal="pressed" from="UI/MenuButtons/Start/StartMenu/Quit" to="UI/MenuButtons" method="_on_Quit_pressed"]
 [connection signal="pressed" from="UI/MenuButtons/Difficulty/DifficultyMenu/Classic" to="UI/MenuButtons" method="_on_Classic_pressed"]
 [connection signal="pressed" from="UI/MenuButtons/Difficulty/DifficultyMenu/Flu" to="UI/MenuButtons" method="_on_Flu_pressed"]
 [connection signal="pressed" from="UI/MenuButtons/Difficulty/DifficultyMenu/Covid-19" to="UI/MenuButtons" method="_on_Covid19_pressed"]
 [connection signal="pressed" from="UI/MenuButtons/Difficulty/DifficultyMenu/Back" to="UI/MenuButtons" method="_on_Back_pressed"]
+[connection signal="pressed" from="UI/MenuButtons/Highscores/HighscoreMenu/HighscoreBack" to="UI/MenuButtons" method="_on_HighscoreBack_pressed"]

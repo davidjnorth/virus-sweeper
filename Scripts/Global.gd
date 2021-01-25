@@ -16,19 +16,31 @@ var game_rules = {
 		"medium": {
 			"viruses": 20,
 			"incubation_period": 30,
-			"virus_increase": 5,
-			"virus_decrease": 5
+			"probability_of_infection": 0.005,
+			"recovery_rate": 0.06
 		}	
 	},
 	"covid-19": {
 		"medium": {
-			"viruses": 1,
+			"viruses": 20,
 			"incubation_period": 60,
 			"probability_of_infection": 0.01,
 			"recovery_rate": 0.08
 		}
 	}
 }
+var highscore_save_path = "user://highscores.dat"
+var secret = "KVPsmEhPSeqb622m"
 
 func game_details():
 	return game_rules[game_mode][game_difficulty]
+	
+func current_highscores():
+	var highscores = null
+	var file = File.new()
+	if file.file_exists(highscore_save_path):
+		var error = file.open_encrypted_with_pass(highscore_save_path, File.READ, global.secret)
+		if error == OK:
+			highscores = file.get_var()
+			file.close()
+	return highscores
